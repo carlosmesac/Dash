@@ -149,4 +149,34 @@ También necesitaremos un contenedor de audio para poder ejecutarlo, en este cas
 <div>
 ```
 
-4. 
+## 4. Video Settings
+
+En este caso se pretende generar un reproductor en el cual se pueden seleccionar algunas opciones referentes al mismo de manera dinámica, como el maximo bitrate posible, el mínimo, etc.
+
+```html
+<script>
+    function applySettings() {
+        var stableBuffer = parseInt(document.getElementById('stableBuffer').value, 10);
+        var bufferAtTopQuality = parseInt(document.getElementById('topQualityBuffer').value, 10);
+        var minBitrate = parseInt(document.getElementById('minBitrate').value, 10);
+        var maxBitrate = parseInt(document.getElementById('maxBitrate').value, 10);
+        var limitByPortal = document.getElementById('limitByPortal').checked;
+
+        player.updateSettings({
+            'streaming': {
+                'stableBufferTime': stableBuffer,
+                'bufferTimeAtTopQualityLongForm': bufferAtTopQuality,
+                'abr': {
+                    'minBitrate': {
+                        'video': minBitrate
+                    },
+                    'maxBitrate': {
+                        'video': maxBitrate
+                    },
+                    'limitBitrateByPortal': limitByPortal
+                }
+            }
+        })
+    }
+</script>
+```

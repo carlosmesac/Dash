@@ -18,7 +18,7 @@
 <body>
     <script>
         var player;
-
+        //Inicia la el reproductor y ejecuta la funcion para ver el buffer cada 500ms
         function init() {
             player = dashjs.MediaPlayerFactory.create(document.querySelector(".dashPlayer"));
             setInterval(updateStats, 500);
@@ -35,9 +35,11 @@
         </video>
     </div>
 
+    <!--Espacio para ver las estadisticas-->
     <div>
         <span id="stats"></span>
     </div>
+    <!--Ejecutamos la funcion pro primera vez al iniciar la página-->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             init();

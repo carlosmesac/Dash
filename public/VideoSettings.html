@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video with settings</title>
+    <script>
+        function applySettings() {
+            var stableBuffer = parseInt(document.getElementById('stableBuffer').value, 10);
+            var bufferAtTopQuality = parseInt(document.getElementById('topQualityBuffer').value, 10);
+            var minBitrate = parseInt(document.getElementById('minBitrate').value, 10);
+            var maxBitrate = parseInt(document.getElementById('maxBitrate').value, 10);
+            var limitByPortal = document.getElementById('limitByPortal').checked;
+
+            player.updateSettings({
+                'streaming': {
+                    'stableBufferTime': stableBuffer,
+                    'bufferTimeAtTopQualityLongForm': bufferAtTopQuality,
+                    'abr': {
+                        'minBitrate': {
+                            'video': minBitrate
+                        },
+                        'maxBitrate': {
+                            'video': maxBitrate
+                        },
+                        'limitBitrateByPortal': limitByPortal
+                    }
+                }
+            })
+        }
+    </script>
+    <script>
+        var player;
+
+        function init() {
+            var video,
+                url = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
+
+            video = document.querySelector("video");
+            player = dashjs.MediaPlayer().create();
+            player.initialize(video, url, true);
+
+            applySettings()
+
+            player.on(dashjs.MediaPlayer.events["PLAYBACK_ENDED"], function() {
+                clearInterval(eventPoller);
+            });
+
+            var eventPoller = setInterval(function() {
+                var streamInfo = player.getActiveStream().getStreamInfo();
+                var dashMetrics = player.getDashMetrics();
+                var dashAdapter = player.getDashAdapter();
+
+                if (dashMetrics && streamInfo) {
+                    const periodIdx = streamInfo.index;
+                    var repSwitch = dashMetrics.getCurrentRepresentationSwitch('video', true);
+                    var bufferLevel = dashMetrics.getCurrentBufferLevel('video', true);
+                    var bitrate = repSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(repSwitch.to, periodIdx) / 1000) : NaN;
+                    document.getElementById('currentBufferLevel').innerText = bufferLevel + " secs";
+                    document.getElementById('reportedBitrate').innerText = bitrate + " Kbps";
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+
+<body>
+
+    <div>
+        <div>
+            <video data-dashjs-player autoplay controls>
+            </video>
+        </div>
+        <fieldset>
+            <legend>Configuration</legend>
+            If bitrates values "-1" -> no limit
+            <div>
+                "Max estable buffer (sec)"
+                <input type="number" id="stableBufferTime" value="20">
+            </div>
+            <div>
+                "Buffer length at top quality(sec)"
+                <input type="number" id="bufferTimeAtTopQualityLongForm" value="20">
+            </div>
+            <div>
+                "Max selectable bitrate(Kbps)"
+                <input type="number" id="maxBitrate" value="2500">
+
+            </div>
+            <div>
+                "Min selectable bitrate(Kbps)"
+                <input type="number" id="minBitrate" value="-1">
+            </div>
+            <div>
+                "Limit Bitrate by portal size"
+                <input type="checkbox" id="limitBitrateByPortal">
+                <div>
+                    "when selected, the size of the video will limit the max chosen video resolution"
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        init();
+    });
+</script>
+
+</html>
