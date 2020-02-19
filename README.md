@@ -4,7 +4,7 @@
 
 Antes de comenzar la parte práctica,necesitaremos:
 
-* Un servidor (puede ser local, en este caso utilizo laragon)
+* Un servidor (puede ser local)
 * Instalar la librería de dashjs en la carpeta raíz del proyecto
 
 ```shell
@@ -194,3 +194,61 @@ Para ello necesitaremos otra librería aparte de la que se requiero por defecto 
 ´´´html
 <script src="../../contrib/akamai/controlbar/ControlBar.js"></script>
 ´´´
+
+Además vamos a necesitar establecer una serie de ``<div>`` para mostrar el controlbar de manera apropiada. También, si queremos predefinir el tamaño del reproductor, así como el de la barra con las funciones podemos añadir un estilo a la página.
+
+```html
+    <div class="dash-video-player ">
+        <!-- HTML structure needed for the ControlBar -->
+        <div class="videoContainer" id="videoContainer">
+            <video preload="auto" autoplay="true"> </video>
+            <div id="videoController" class="video-controller unselectable">
+                <div id="playPauseBtn" class="btn-play-pause" title="Play/Pause">
+                    <span id="iconPlayPause" class="icon-play"></span>
+                </div>
+                <span id="videoTime" class="time-display">00:00:00</span>
+                <div id="fullscreenBtn" class="btn-fullscreen control-icon-layout" title="Fullscreen">
+                    <span class="icon-fullscreen-enter"></span>
+                </div>
+                <div id="bitrateListBtn" class="control-icon-layout" title="Bitrate List">
+                    <span class="icon-bitrate"></span>
+                </div>
+                <input type="range" id="volumebar" class="volumebar" value="1" min="0" max="1" step=".01">
+                <div id="muteBtn" class="btn-mute control-icon-layout" title="Mute">
+                    <span id="iconMute" class="icon-mute-off"></span>
+                </div>
+                <div id="trackSwitchBtn" class="control-icon-layout" title="A/V Tracks">
+                    <span class="icon-tracks"></span>
+                </div>
+                <div id="captionBtn" class="btn-caption control-icon-layout" title="Closed Caption">
+                    <span class="icon-caption"></span>
+                </div>
+                <span id="videoDuration" class="duration-display">00:00:00</span>
+                <div class="seekContainer">
+                    <div id="seekbar" class="seekbar seekbar-complete">
+                        <div id="seekbar-buffer" class="seekbar seekbar-buffer"></div>
+                        <div id="seekbar-play" class="seekbar seekbar-play"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+```
+
+
+## 6. Captions
+
+Para probar la funcionalidad de los subtitulos, podemos utilizar el siguiente script, el cual añadiremos en el _head_ del HTML.
+
+```html
+    <script>
+        function init() {
+            var player;
+            var video,
+                url = "https://dash.akamaized.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd";
+            video = document.querySelector("video");
+            player = dashjs.MediaPlayer({}).create();
+            player.initialize(video, url, true);
+        }
+    </script>
+```

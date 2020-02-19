@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captions</title>
+    <script src="../node_modules/dashjs/dist/dash.all.min.js"></script>
+    <style>
+        video {
+            width: 640px;
+            height: 360px;
+        }
+    </style>
+    <script>
+        function init() {
+            var player;
+            var video,
+                url = "https://dash.akamaized.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd";
+            video = document.querySelector("video");
+            player = dashjs.MediaPlayer({}).create();
+            player.initialize(video, url, true);
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <video autoplay controls></video>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            init();
+        })
+    </script>
+</body>
+
+</html>
