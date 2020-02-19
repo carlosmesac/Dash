@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyAudio</title>
+    <script src="../node_modules/dashjs/dist/dash.all.min.js"></script>
+</head>
+
+<body>
+    <script>
+        function init() {
+            var audio,
+                player,
+                url = "https://vm2.dashif.org/dash/vod/testpic_2s/audio.mpd";
+            audio = document.querySelector('audio');
+            player = dashjs.MediaPlayer().create();
+            player.initialize(audio, url, true);
+        }
+    </script>
+    <div>
+        <audio autoplay controls></audio>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            init();
+        })
+    </script>
+</body>
+
+</html>

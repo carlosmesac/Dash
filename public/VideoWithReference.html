@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video with reference</title>
+    <script src="../node_modules/dashjs/dist/dash.all.debug.js"></script>
+    <style>
+        video {
+            height: 360px;
+            width: 640px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <script>
+        var player;
+
+        function init() {
+            player = dashjs.MediaPlayerFactory.create(document.querySelector(".dashPlayer"));
+            setInterval(updateStats, 500);
+
+        }
+
+        function updateStats() {
+            document.querySelector('#stats').innerHTML = "Buffer level " + player.getBufferLength() + " s"
+        }
+    </script>
+    <div>
+        <video class="dashPlayer" autoplay controls>
+            <source src="https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd" type="application/dash+xml">
+        </video>
+    </div>
+
+    <div>
+        <span id="stats"></span>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            init();
+        })
+    </script>
+</body>
+
+</html>

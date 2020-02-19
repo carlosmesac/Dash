@@ -1,0 +1,17 @@
+{
+  "name": "DASH",
+  "version": "1.0.0",
+  "description": "1. Crear página con vídeo solamente mediante DASH",
+  "main": "index.js",
+  "dependencies": {
+    "dashjs": "^3.0.2",
+    "highlighter": "^0.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
