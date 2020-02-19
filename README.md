@@ -11,31 +11,6 @@ Antes de comenzar la parte práctica,necesitaremos:
 npm i dashjs
 ```
 
-Todos los distintos casos de uso posibles de dashjs, nos los proporcionan ellos mismos si seguimos los siguientes pasos:
-
-* Intalar grunt
-
-```shell
-npm install -g grunt-cli
-```
-
-* Clonar el repositorio de dashjs
-
-```shell
-git clone https://github.com/Dash-Industry-Forum/dash.js.git
-```
-
-* instalar las dependecias en el directorio objetivo
-
-```shell
-npm intall
-```
-
-* Lo ejecutamos
-
-```shell
-grunt dev
-```
 
 Lo primero que necesitaremos en todos los ejemplos que vamos a realizar es incorporar la librería de _dashjs_
 
