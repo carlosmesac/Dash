@@ -4,7 +4,7 @@
 
 Antes de comenzar la parte práctica,necesitaremos:
 
-* Un servidor (puede ser local)
+* Un servidor
 * Instalar la librería de dashjs en la carpeta raíz del proyecto
 
 ```shell
