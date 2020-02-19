@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video with settings</title>
+    <script src="../node_modules/dashjs/dist/dash.all.min.js"></script>
+
     <script>
         function applySettings() {
             var stableBuffer = parseInt(document.getElementById('stableBuffer').value, 10);
@@ -41,26 +43,8 @@
             player = dashjs.MediaPlayer().create();
             player.initialize(video, url, true);
 
-            applySettings()
+            applySettings();
 
-            player.on(dashjs.MediaPlayer.events["PLAYBACK_ENDED"], function() {
-                clearInterval(eventPoller);
-            });
-
-            var eventPoller = setInterval(function() {
-                var streamInfo = player.getActiveStream().getStreamInfo();
-                var dashMetrics = player.getDashMetrics();
-                var dashAdapter = player.getDashAdapter();
-
-                if (dashMetrics && streamInfo) {
-                    const periodIdx = streamInfo.index;
-                    var repSwitch = dashMetrics.getCurrentRepresentationSwitch('video', true);
-                    var bufferLevel = dashMetrics.getCurrentBufferLevel('video', true);
-                    var bitrate = repSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(repSwitch.to, periodIdx) / 1000) : NaN;
-                    document.getElementById('currentBufferLevel').innerText = bufferLevel + " secs";
-                    document.getElementById('reportedBitrate').innerText = bitrate + " Kbps";
-                }
-            }, 1000);
         }
     </script>
 </head>
@@ -69,19 +53,18 @@
 
     <div>
         <div>
-            <video data-dashjs-player autoplay controls>
-            </video>
+            <video data-dashjs-player autoplay controls preload="auto"></video>
         </div>
-        <fieldset>
+        <fieldset style="width: auto;">
             <legend>Configuration</legend>
             If bitrates values "-1" -> no limit
             <div>
                 "Max estable buffer (sec)"
-                <input type="number" id="stableBufferTime" value="20">
+                <input type="number" id="stableBuffer" value="20">
             </div>
             <div>
                 "Buffer length at top quality(sec)"
-                <input type="number" id="bufferTimeAtTopQualityLongForm" value="20">
+                <input type="number" id="topQualityBuffer" value="20">
             </div>
             <div>
                 "Max selectable bitrate(Kbps)"
@@ -94,20 +77,23 @@
             </div>
             <div>
                 "Limit Bitrate by portal size"
-                <input type="checkbox" id="limitBitrateByPortal">
+                <input type="checkbox" id="limitByPortal">
                 <div>
                     "when selected, the size of the video will limit the max chosen video resolution"
                 </div>
             </div>
+            <div>
+                <button onclick="applySettings()">Apply Settings</button>
+            </div>
         </fieldset>
 
     </div>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            init();
+        });
+    </script>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        init();
-    });
-</script>
+
 
 </html>

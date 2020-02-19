@@ -153,6 +153,8 @@ También necesitaremos un contenedor de audio para poder ejecutarlo, en este cas
 
 En este caso se pretende generar un reproductor en el cual se pueden seleccionar algunas opciones referentes al mismo de manera dinámica, como el maximo bitrate posible, el mínimo, etc.
 
+A continuación se muestra el escript principal para actualizar los valores del video.
+
 ```html
 <script>
     function applySettings() {
@@ -180,3 +182,15 @@ En este caso se pretende generar un reproductor en el cual se pueden seleccionar
     }
 </script>
 ```
+
+Con esta página podemos observar como el video cambia de resolucion y de tamaño segun las especificaciones que le damos. También podemos observar que a mayor bitrate solicite el video el buffer es menor debido a que se requiere mayor ancho de banda.
+
+## 5. Modifying controlbar
+
+Lo que pretendemos ahora es modificar el controlbar para que el diseño sea diferente, mostrando una opción para seleccionar la resolución con la que deseamos visualizar el vídeo.
+
+Para ello necesitaremos otra librería aparte de la que se requiero por defecto siempre (_"dash.all.min.js"_), está nueva librería es:
+
+´´´html
+<script src="../../contrib/akamai/controlbar/ControlBar.js"></script>
+´´´
