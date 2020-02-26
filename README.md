@@ -11,12 +11,17 @@ Antes de comenzar la parte práctica,necesitaremos:
 npm i dashjs
 ```
 
+Tenemos que tener en cuenta que un punto importante a la hora de usar dashjs, es que el formato de los videos o audios tiene que ser _**.mpd**_ debido a la forma en la que trabajan los segments.
+
+Una forma de convertir 
 
 Lo primero que necesitaremos en todos los ejemplos que vamos a realizar es incorporar la librería de _dashjs_
 
 ```html
 <script src= "../node_modules/dashjs/dist/dash.all.min.js"></script>
 ```
+
+Para poder usar la función de autoplay, necesitamos que haya habido interacción con la página previamente, para esto crearemos una página, la cual consitirá de solamente botones que nos redirigan a los ejemplos correspondientes, de esta manera el video se pondrá en _play_ directamente si tiene la opción autoplay habilitada
 
 ### 1. Página de solo vídeo con controls
 
@@ -227,3 +232,32 @@ Para probar la funcionalidad de los subtitulos, podemos utilizar el siguiente sc
         }
     </script>
 ```
+
+## 7. Adjuntar vídeo
+
+En este apartado se pretende aduntar un vídeo una vez se pulsa un botón, el cual crea un elemento de video, que reproduce directamente el vídeo.
+
+Para ello requerimos el siquiente script.
+
+```html
+<script>
+            function init() {
+            url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
+            player = dashjs.MediaPlayer().create();
+            player.initialize(null, url, true);
+            player.preload();
+        };
+
+        function attachVideo() {
+            var videoContainer = document.getElementById("videoContainer");
+            if (!video) {
+                video = document.createElement("video");
+                video.controls = true;
+                videoContainer.appendChild(video);
+            }
+            player.attachView(video);
+        };
+    </script>
+```
+
+necesitamos crear en el archivo html, un div con el id 'videoContainer', en el cual se le adjuntará dentro el elemento de vídeo en el que más tarde se reproducira el video.

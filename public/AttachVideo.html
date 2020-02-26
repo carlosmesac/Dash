@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attach Video</title>
+    <script src="../node_modules/dashjs/dist/dash.all.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        button {
+            margin: 15px;
+        }
+        
+        video {
+            height: 360px;
+            width: 640px;
+        }
+    </style>
+    <script>
+        var video;
+        var player;
+
+        function init() {
+            url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
+            player = dashjs.MediaPlayer().create();
+            player.initialize(null, url, true);
+            player.preload();
+        };
+
+        function attachVideo() {
+            var videoContainer = document.getElementById("videoContainer");
+            if (!video) {
+                video = document.createElement("video");
+                video.controls = true;
+                videoContainer.appendChild(video);
+            }
+            player.attachView(video);
+        };
+    </script>
+</head>
+
+<body>
+    <button type="button" class="btn btn-outline-primary btn-block" onclick="attachVideo()">Attach Video</button>
+    <div id="videoContainer">
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            init();
+        });
+    </script>
+</body>
+
+</html>
