@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low Latency Stream</title>
+    <script src="../node_modules/dashjs/dist/dash.all.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script>
+        var player, targetLatency, minDrift, catchupPlaybackRate;
+
+        function init() {
+            var video,
+                url = "https://vm2.dashif.org/livesim-chunked/chunkdur_1/ato_7/testpic4_8s/Manifest300.mpd";
+
+            video = document.querySelector("video");
+            player = dashjs.MediaPlayer().create();
+            player.initialize(video, url, true);
+            player.updateSettings({
+                'streaming': {
+                    'lowLatencyEnabled': true
+                }
+            });
+
+            applyParameters();
+
+            return player;
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <video cotrols="true"></video>
+    </div>
+</body>
+
+</html>

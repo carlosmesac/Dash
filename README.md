@@ -13,7 +13,21 @@ npm i dashjs
 
 Tenemos que tener en cuenta que un punto importante a la hora de usar dashjs, es que el formato de los videos o audios tiene que ser _**.mpd**_ debido a la forma en la que trabajan los segments.
 
-Una forma de convertir 
+Una forma de convertir los archivos mp4 a formato **mpd** es usar [MP4Box](https://gpac.wp.imt.fr/2012/02/01/dash-support/), que además nos facilitan una serie de comandos para poder modificar aspectos de los videos como la duración de los segmentos, subsegmentos, etc.
+
+El comando necesario para convertir un archivo mp4 a mpd es el siguiente.
+
+```Shell
+ mp4box -dash 3000 -rap -profile dashavc264:onDemand example.mp4#audio example.mp4#video
+```
+
+Podemos generar el archivo para DASH mediante MP4Box ajustando los siguientes parámetros:
+
+* -dash X: produce segmentos de una longintud de X milisegundos.
+* -rap: intenta cortar segmentos para que todos comiencen con un punto de acceso.
+* -profile: especifica el perfil DASH objetivo: onDemand, live, main, simple, full, and two profiles from the DASH-IF: dashavc264:live, dashavc264:onDemand
+* Se pueden encontrar muchos otros parametros en el siguiente enlace, [parámetros](https://github.com/gpac/gpac/wiki/DASH-Support-in-MP4Box)
+
 
 Lo primero que necesitaremos en todos los ejemplos que vamos a realizar es incorporar la librería de _dashjs_
 
