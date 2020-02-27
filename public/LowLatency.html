@@ -7,6 +7,12 @@
     <title>Low Latency Stream</title>
     <script src="../node_modules/dashjs/dist/dash.all.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        video {
+            height: 360px;
+            width: 640px;
+        }
+    </style>
     <script>
         var player, targetLatency, minDrift, catchupPlaybackRate;
 
@@ -27,13 +33,73 @@
 
             return player;
         }
+
+        function applyParameters() {
+            targetLatency = parseFloat(document.getElementById("target-latency").value, 10);
+            minDrift = parseFloat(document.getElementById("min-drift").value, 10);
+            catchupPlaybackRate = parseFloat(document.getElementById("catchup-playback-rate").value, 10);
+
+            player.updateSettings({
+                'streaming': {
+                    'liveDelay': targetLatency,
+                    'liveCatchUpMinDrift': minDrift,
+                    'liveCatchUpPlaybackRate': catchupPlaybackRate
+                }
+            });
+        }
     </script>
 </head>
 
 <body>
     <div>
-        <video cotrols="true"></video>
+        <video controls="true" autoplay></video>
     </div>
+    <form action="javascript:applyParameters()">
+        <fieldset>
+            <div>"Target Latency "
+                <input id="target-latency" type="number" value="3" min="0">
+            </div>
+            <div>"Min. drift(secs) "
+                <input id="min-drift" type="number" value="0.05" min="0.0" max="0.5" step="0.01">
+            </div>
+            <div>"Catch-up Playback rate(%) "
+                <input id="catchup-playback-rate" type="number" value="0.05" min="0.0" max="0.5" step="0.01">
+            </div>
+            <button type="submit">Apply</button>
+        </fieldset>
+    </form>
+    <div>
+        <fieldset>
+            <legend>Current values</legend>
+            <ul>
+                <li>Latency: <span id="latency-tag"></span></li>
+                <li>Min. drift: <span id="mindrift-tag"></span></li>
+                <li>Playback rate: <span id="playbackrate-tag"></span></li>
+                <li>Buffer: <b><span id="buffer-tag"></span></b></li>
+            </ul>
+        </fieldset>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var player = init();
+
+            setInterval(function() {
+                var dashMetrics = player.getDashMetrics();
+                var settings = player.getSettings();
+
+                var currentLatency = parseFloat(player.getCurrentLiveLatency(), 10);
+                document.getElementById("latency-tag").innerHTML = currentLatency + " secs";
+
+                document.getElementById("mindrift-tag").innerHTML = settings.streaming.liveCatchUpMinDrift + " secs";
+
+                var currentPlaybackRate = player.getPlaybackRate();
+                document.getElementById("playbackrate-tag").innerHTML = Math.round(currentPlaybackRate * 100) / 100;
+
+                var currentBuffer = dashMetrics.getCurrentBufferLevel("video");
+                document.getElementById("buffer-tag").innerHTML = currentBuffer + " secs";
+            }, 200);
+        });
+    </script>
 </body>
 
 </html>
