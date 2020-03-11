@@ -275,3 +275,5 @@ Para ello requerimos el siquiente script.
 ```
 
 necesitamos crear en el archivo html, un div con el id 'videoContainer', en el cual se le adjuntará dentro el elemento de vídeo en el que más tarde se reproducira el video.
+
+## 8. Creacion de página con video realtime con lowlatency
